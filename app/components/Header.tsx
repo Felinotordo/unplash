@@ -14,30 +14,34 @@ const Header = ({ children, activePage }: HeaderProps) => {
   const { toggleTheme } = useDarkMode();
 
   const activeClasses =
-    "text-dark dark:text-white bg-light dark:bg-gray/30 rounded-[5px] font-vietnam font-medium text-[14px] px-[20px] py-[10px]";
+    "text-dark dark:text-white bg-light dark:bg-gray/30 rounded-md font-vietnam font-medium text-[13px] sm:text-[14px] px-3 sm:px-[20px] py-2 sm:py-[10px]";
 
   const inactiveClasses =
-    "text-gray bg-transparent rounded-[5px] font-vietnam font-medium text-[14px] px-[20px] py-[10px]";
+    "text-gray bg-transparent rounded-md font-vietnam font-medium text-[13px] sm:text-[14px] px-3 sm:px-[20px] py-2 sm:py-[10px]";
 
   return (
     <div className="w-full flex flex-col items-center bg-white dark:bg-dark transition-colors duration-300">
-      <div className="flex items-center justify-center border-b border-b-light dark:border-b-gray w-full h-[65px]">
-        <div className="w-[calc(100%-35px)] h-full flex items-center justify-between gap-4 px-4">
-          <Image
-            src="/Logo.svg"
-            alt="Logo"
-            width={120}
-            height={30}
-            priority
-            className="dark:invert dark:brightness-0 dark:contrast-100"
-          />
+      {/* HEADER */}
+      <div className="flex items-center justify-center border-b border-b-light dark:border-b-gray w-full h-[60px] sm:h-[65px]">
+        <div className="w-full max-w-[1280px] h-full flex items-center justify-between gap-3 px-3 sm:px-6">
+          
+          {/* LOGO */}
+          <Link href="/" aria-label="Go to home">
+            <Image
+              src="/Logo.svg"
+              alt="Logo"
+              width={120}
+              height={30}
+              priority
+              className="w-[90px] sm:w-[120px] cursor-pointer dark:invert dark:brightness-0 dark:contrast-100"
+            />
+          </Link>
 
-          <div className="flex gap-2">
+          {/* NAV */}
+          <div className="flex items-center gap-1 sm:gap-2">
             <Link
               href="/"
-              className={
-                activePage === "home" ? activeClasses : inactiveClasses
-              }
+              className={activePage === "home" ? activeClasses : inactiveClasses}
             >
               Home
             </Link>
@@ -55,15 +59,16 @@ const Header = ({ children, activePage }: HeaderProps) => {
 
             <button
               onClick={toggleTheme}
-              className="text-gray cursor-pointer bg-transparent rounded-[5px] font-vietnam font-medium text-[14px] px-4 py-2 hover:text-dark hover:bg-light transition-colors duration-300"
+              className="text-gray cursor-pointer bg-transparent rounded-md font-vietnam font-medium text-[13px] sm:text-[14px] px-3 sm:px-4 py-2 hover:text-dark hover:bg-light transition-colors duration-300"
             >
-              Change Mode
+              Mode
             </button>
           </div>
         </div>
       </div>
 
-      <div className="w-full h-[calc(100vh-65px)] flex flex-col">
+      {/* CONTENT */}
+      <div className="w-full min-h-[calc(100vh-65px)] flex flex-col bg-white dark:bg-dark">
         {children}
       </div>
     </div>
