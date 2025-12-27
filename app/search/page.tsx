@@ -72,15 +72,20 @@ const Page = () => {
             }}
           />
         </div>
-        <MasonryGrid
-          images={images.map((photo) => ({
-            id: photo.id,
-            src: photo.urls.regular,
-            alt: photo.alt_description ?? "Unsplash image",
-            width: photo.width,
-            height: photo.height,
-          }))}
-        />
+        {images.length != 0 && (
+          <MasonryGrid
+            images={images.map((photo) => ({
+              id: photo.id,
+              src: photo.urls.regular,
+              alt: photo.alt_description ?? "Unsplash image",
+              width: photo.width,
+              height: photo.height,
+            }))}
+          />
+        )}
+        {images.length == 0 && (
+          <p className="text-gray text-sm font-vietnam font-bold px-6 py-6">No images found.</p>
+        )}
       </div>
     </Header>
   );
