@@ -15,12 +15,14 @@ type Collection = {
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
   const [collections, setCollections] = useState<Collection[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchCollections = async () => {
     try {
       const res = await fetch("/api/collections");
       const data = await res.json();
       setCollections(data);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching collections:", error);
     } finally {
@@ -40,16 +42,23 @@ export default function Home() {
   };
 
   const save_collection = async (name: string) => {
-    await fetch("/api/collections", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: name,
-      }),
-    });
-    
+    try {
+      const response = await fetch("/api/collections", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name,
+        }),
+      });
+
+      if (response.ok) {
+        await fetchCollections();
+      }
+    } catch (error) {
+      console.error("Error saving collection:", error);
+    }
   };
 
   return (
@@ -71,7 +80,7 @@ export default function Home() {
           >
             Collections
           </h1>
-          <h1 className="text-dark font-vietnam font-extralight w-[360px] text-[14px] text-center">
+          <h1 className="text-dark dark:text-light font-vietnam font-extralight w-[360px] text-[14px] text-center">
             Explore the world through collections of beautiful photos free to
             use under the{" "}
             <a
@@ -85,14 +94,18 @@ export default function Home() {
             .
           </h1>
           <div className="w-[90%] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 my-10">
-            {collections.map((collection) => (
-              <CollectionCard
-                key={collection.id}
-                name={collection.name}
-                images={[]} 
-              />
-            ))}
-            <AddCollectionCard onClick={addCollection} />
+            {!isLoading && (
+              <>
+                {collections.map((collection) => (
+                  <CollectionCard
+                    key={collection.id}
+                    id={collection.id}
+                    name={collection.name}
+                  />
+                ))}
+                <AddCollectionCard onClick={addCollection} />
+              </>
+            )}
           </div>
         </div>
       </Header>

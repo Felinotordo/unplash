@@ -20,14 +20,12 @@ const Page = () => {
   const query = searchParams.get("q") ?? "";
 
   const [images, setImages] = useState<UnsplashPhoto[]>([]);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!query) return;
 
     const fetchImages = async () => {
       try {
-        setLoading(true);
 
         const res = await fetch(
           `https://api.unsplash.com/search/photos?query=${encodeURIComponent(
@@ -46,7 +44,6 @@ const Page = () => {
       } catch (error) {
         console.error("Error fetching images:", error);
       } finally {
-        setLoading(false);
       }
     };
 

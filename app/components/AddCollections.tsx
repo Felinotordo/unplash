@@ -9,7 +9,7 @@ export const AddCollectionCard: React.FC<AddCollectionCardProps> = ({ onClick })
     <button
       onClick={onClick}
       className="
-        w-[350px] h-[250px]
+        w-[350px] h-[280px]
         flex flex-col items-center justify-center
         bg-light-transparent dark:bg-light/50
         rounded-lg
