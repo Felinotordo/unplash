@@ -3,17 +3,22 @@ import { supabase } from "@/lib/supabase/client";
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { collectionId: string; imageId: string } },
+  { params }: { params: Promise<{ id: string; imageid: string }> }, // ✅ Promise
 ) {
   try {
-    const { collectionId, imageId } = params;
+    const { id, imageid } = await params; 
+    
+    console.log("Attempting to delete image from collection:", {
+      id,
+      imageid,
+    });
 
-    // Eliminar la relación entre la colección y la imagen nashe
+    // Eliminar la relación entre la colección y la imagen
     const { error: deleteError, count } = await supabase
       .from("collection_image")
       .delete({ count: "exact" })
-      .eq("id_collection", collectionId)
-      .eq("id_images", imageId);
+      .eq("id_collection", id)
+      .eq("id_images", imageid);
 
     if (deleteError) {
       console.error("Error deleting relation:", deleteError);
@@ -31,21 +36,23 @@ export async function DELETE(
       );
     }
 
+    // Verificar si la imagen está en otras colecciones
     const { data: otherRelations } = await supabase
       .from("collection_image")
       .select("id_images")
-      .eq("id_images", imageId)
+      .eq("id_images", imageid)
       .limit(1);
 
+    // Si no está en ninguna otra colección, eliminarla de la tabla images
     if (!otherRelations || otherRelations.length === 0) {
-      await supabase.from("images").delete().eq("id_image", imageId);
+      await supabase.from("images").delete().eq("id_image", imageid);
     }
 
     return NextResponse.json({
       message: "Image removed from collection successfully",
       data: {
-        collection_id: collectionId,
-        image_id: imageId,
+        collection_id: id,
+        image_id: imageid,
       },
     });
   } catch (error) {

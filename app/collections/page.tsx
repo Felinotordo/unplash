@@ -17,19 +17,18 @@ export default function Home() {
   const [collections, setCollections] = useState<Collection[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchCollections = async () => {
-    try {
-      const res = await fetch("/api/collections");
-      const data = await res.json();
-      setCollections(data);
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error fetching collections:", error);
-    } finally {
-    }
-  };
-
   useEffect(() => {
+    const fetchCollections = async () => {
+      try {
+        const res = await fetch("/api/collections");
+        const data = await res.json();
+        setCollections(data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching collections:", error);
+      }
+    };
+
     fetchCollections();
   }, []);
 
@@ -54,7 +53,9 @@ export default function Home() {
       });
 
       if (response.ok) {
-        await fetchCollections();
+        const res = await fetch("/api/collections");
+        const data = await res.json();
+        setCollections(data);
       }
     } catch (error) {
       console.error("Error saving collection:", error);
@@ -64,23 +65,11 @@ export default function Home() {
   return (
     <div className="flex items-center justify-center">
       <Header activePage="collections">
-        <div className="flex items-center justify-center flex-col w-full my-[28px]">
-          <h1
-            className="
-            text-[40px]
-            font-semibold
-            bg-linear-to-r
-            from-[#f0c59b]
-            to-[#8d3684]
-            bg-clip-text
-            text-transparent
-            w-fit
-            my-[10px] 
-          "
-          >
+        <div className="flex items-center justify-center flex-col w-full my-[20px] md:my-[28px] px-4">
+          <h1 className="text-[32px] md:text-[40px] font-semibold bg-linear-to-r from-[#f0c59b] to-[#8d3684] bg-clip-text text-transparent w-fit my-[8px] md:my-[10px] text-center">
             Collections
           </h1>
-          <h1 className="text-dark dark:text-light font-vietnam font-extralight w-[360px] text-[14px] text-center">
+          <h1 className="text-dark dark:text-light font-vietnam font-extralight w-full max-w-[360px] text-[13px] md:text-[14px] text-center px-4">
             Explore the world through collections of beautiful photos free to
             use under the{" "}
             <a
@@ -93,7 +82,7 @@ export default function Home() {
             </a>
             .
           </h1>
-          <div className="w-[90%] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 my-10">
+          <div className="w-full max-w-[1200px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 my-6 md:my-10 px-4">
             {!isLoading && (
               <>
                 {collections.map((collection) => (
@@ -108,12 +97,13 @@ export default function Home() {
             )}
           </div>
         </div>
+        
       </Header>
       <AddCollectionModal
-        isOpen={modalOpen}
-        onClose={onClose}
-        onSave={save_collection}
-      />
+          isOpen={modalOpen}
+          onClose={onClose}
+          onSave={save_collection}
+        />
     </div>
   );
 }

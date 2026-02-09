@@ -25,7 +25,7 @@ const CollectionCard = ({ id, name }: Props) => {
         const res = await fetch(`/api/collections/${id}/images`);
         const data = await res.json();
         if (!mounted) return;
-        setImages(Array.isArray(data) ? data : []);
+        setImages(data.images || []);
       } catch (error) {
         console.error("Error fetching images:", error);
         if (mounted) setImages([]);
@@ -38,6 +38,10 @@ const CollectionCard = ({ id, name }: Props) => {
   }, [id]);
 
   const preview = images.slice(0, 3);
+  if(preview.length === 0){
+    return null;
+
+  };
 
   return (
     <div className="">
@@ -47,13 +51,13 @@ const CollectionCard = ({ id, name }: Props) => {
         className="group rounded-md overflow-hidden bg-transparent cursor-pointer"
       >
         <div className="w-full">
-          {preview.length === 0 && (
+          {/*preview.length === 0 && (
             <div className="relative h-[220px]">
               <div className="absolute inset-0 transition-opacity group-hover:bg-black/5" />
             </div>
-          )}
+          )*/}
           {preview.length === 1 && (
-            <div className="relative h-[220px]">
+            <div className="relative h-[220px] rounded-md">
               <Image
                 src={preview[0].url}
                 alt={name}
@@ -66,7 +70,7 @@ const CollectionCard = ({ id, name }: Props) => {
           )}
 
           {preview.length === 2 && (
-            <div className="grid grid-cols-2 gap-2 h-[220px] rounded-md">
+            <div className="grid grid-cols-2 h-[220px] rounded-md">
               {preview.map((img) => (
                 <div key={img.id} className="relative">
                   <Image
@@ -82,16 +86,14 @@ const CollectionCard = ({ id, name }: Props) => {
             </div>
           )}
 
-
           {preview.length >= 3 && (
             <div
-              className="grid gap-2 h-[220px] rounded-md"
+              className="grid h-[220px] rounded-md"
               style={{
                 gridTemplateColumns: "2fr 1fr",
                 gridTemplateRows: "1fr 1fr",
               }}
             >
-
               <div className="relative row-span-2">
                 <Image
                   src={preview[0].url}
