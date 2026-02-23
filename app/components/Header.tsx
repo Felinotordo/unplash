@@ -30,7 +30,7 @@ const Header = ({ children, activePage }: HeaderProps) => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center bg-white dark:bg-dark transition-colors duration-300">
+    <div className="w-full flex flex-col items-center bg-white dark:bg-dark">
       {/* HEADER */}
       <div className="flex items-center justify-center border-b border-b-light dark:border-b-gray w-full h-[60px] sm:h-[65px]">
         <div className="w-full max-w-[1280px] h-full flex items-center justify-between gap-3 px-3 sm:px-6">

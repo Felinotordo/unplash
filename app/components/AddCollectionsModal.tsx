@@ -80,7 +80,7 @@ export const AddCollectionModal: React.FC<AddCollectionModalProps> = ({
               rounded-md
               hover:bg-light-transparent
               disabled:bg-gray-300 disabled:cursor-not-allowed
-              transition-colors
+              transition-colors duration-300
             "
           >
             Save
@@ -94,7 +94,7 @@ export const AddCollectionModal: React.FC<AddCollectionModalProps> = ({
               text-dark dark:text-white
               hover:bg-light-transparent
               rounded-md
-              transition-colors
+              transition-colors duration-300
             "
           >
             Cancel
